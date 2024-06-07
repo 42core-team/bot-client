@@ -10,7 +10,7 @@ import (
 func main() {
 	start := time.Now()
 
-	_, err := git.Clone("git@github.com:GREAULouen/miniRT.git", "asd")
+	_, err := git.Clone("git@github.com:GREAULouen/miniRT.git")
 	if err != nil {
 		fmt.Println(err)
 	}
