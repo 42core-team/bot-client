@@ -1,28 +1,27 @@
-SRCDIR = repo/src
-OBJDIR = repo/obj
+SRCDIR = ./repo/src
+OBJDIR = ./repo/build
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CONDIR = ./connection
-LIBS = $(CONDIR)/con_lib.a
-INC = $(CONDIR)
+COREDIR = /core
+LIBS = $(COREDIR)/con_lib.a
+INC = $(COREDIR)
 EXEC = bot
 
 .PHONY: build clean fclean re $(EXEC)
 
-build: $(EXEC)
-	mkdir -p $(OBJDIR)
-	make -C $(CONDIR)
+build: fclean $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ -L $(CONDIR) -l:con_lib.a -I $(INC)
+	$(CC) $(CFLAGS) $^ -o $@ -L $(COREDIR) -l:con_lib.a -I $(INC)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
 
-clean: stop
+clean:
 	rm -rf $(OBJDIR)
 
 fclean: clean

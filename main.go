@@ -2,19 +2,17 @@ package main
 
 import (
 	"fmt"
-	"time"
 
+	"github.com/42core-team/bot-client/exec"
 	"github.com/42core-team/bot-client/git"
 )
 
 func main() {
-	start := time.Now()
-
-	_, err := git.Clone("git@github.com:GREAULouen/miniRT.git")
+	_, err := git.Clone("https://github.com/42core-team/my-core-bot")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	elapsed := time.Since(start)
-	fmt.Printf("git.Clone took %s\n", elapsed)
+	exec.BuildBot()
+	exec.RunBot()
 }
