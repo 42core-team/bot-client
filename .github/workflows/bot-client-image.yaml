@@ -34,7 +34,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./.github/workflows
-          platforms: linux/amd64
+          context: ./
+          file: ./.github/workflows/Dockerfile
+          # platforms: linux/amd64
           push: true
           tags: registry.coregame.de/core/bot-client:${{ github.ref_name }}, registry.coregame.de/core/bot-client:latest
