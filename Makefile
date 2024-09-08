@@ -1,7 +1,10 @@
-IMAGE_NAME = bot-client
+IMAGE_NAME = registry.coregame.de/core/bot-client
 
 run: build
 	docker run -it --rm --env-file .env $(IMAGE_NAME):latest
+
+push: build
+	docker push $(IMAGE_NAME):latest
 
 build:
 	docker build -t $(IMAGE_NAME):latest -f ./.github/workflows/Dockerfile .

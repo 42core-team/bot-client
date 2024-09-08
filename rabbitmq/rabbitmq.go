@@ -14,14 +14,26 @@ var statusq amqp.Queue
 var logq amqp.Queue
 
 func Init() {
+	if !RabbitMQEnabled() {
+		return
+	}
+
 	init_conn()
 	init_channel()
 	init_queues()
 }
 
 func Close() {
+	if !RabbitMQEnabled() {
+		return
+	}
+
 	ch.Close()
 	conn.Close()
+}
+
+func RabbitMQEnabled() bool {
+	return os.Getenv("ENABLE_RABBITMQ") == "true"
 }
 
 func init_conn() {
@@ -43,21 +55,21 @@ func init_queues() {
 		log.Fatalln("CLIENT_ID not set")
 	}
 	statusq, err = ch.QueueDeclare(
-		"bot.status." + clientID, // name
-		true,   // durable
-		false,   // delete when unused
-		false,   // exclusive
-		false,   // no-wait
-		nil,     // arguments
-	  )
+		"bot.status."+clientID, // name
+		true,                   // durable
+		false,                  // delete when unused
+		false,                  // exclusive
+		false,                  // no-wait
+		nil,                    // arguments
+	)
 	fail.OnError(err, "Failed to declare the status queue")
 
 	logq, err = ch.QueueDeclare(
-		"bot.log." + clientID, // name
-		true,   // durable
-		false,   // delete when unused
-		false,   // exclusive
-		false,   // no-wait
+		"bot.log."+clientID, // name
+		true,                // durable
+		false,               // delete when unused
+		false,               // exclusive
+		false,               // no-wait
 		amqp.Table{
 			"x-queue-type": "stream",
 		}, // arguments

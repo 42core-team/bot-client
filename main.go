@@ -12,10 +12,8 @@ import (
 
 func main() {
 	godotenv.Load()
-	if os.Getenv("ENABLE_RABBITMQ") == "true" {
-		rabbitmq.Init()
-		defer rabbitmq.Close()
-	}
+	rabbitmq.Init()
+	defer rabbitmq.Close()
 
 	pullBuild()
 }

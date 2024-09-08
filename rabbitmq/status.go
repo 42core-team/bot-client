@@ -8,40 +8,52 @@ import (
 )
 
 const (
-	STATUS_PULLING = "pulling"
+	STATUS_PULLING  = "pulling"
 	STATUS_BUILDING = "building"
-	STATUS_RUNNING = "running"
+	STATUS_RUNNING  = "running"
 	STATUS_FINISHED = "finished"
-	STATUS_ERROR = "error"
+	STATUS_ERROR    = "error"
 )
 
 type Status struct {
-	Status string `json:"status"`
-	Error *string `json:"error"`
+	Status string  `json:"status"`
+	Error  *string `json:"error"`
 }
 
 func SendStatus(status string) {
-	  body, err := json.Marshal(Status{Status: status})
-	  fail.OnError(err, "Failed to marshal status")
+	if !RabbitMQEnabled() {
+		return
+	}
 
-	  publishStatus(body)
+	body, err := json.Marshal(Status{Status: status})
+	fail.OnError(err, "Failed to marshal status")
+
+	publishStatus(body)
 }
 
 func SendErrorStatus(errmsg string) {
-	  body, err := json.Marshal(Status{Status: STATUS_ERROR, Error: &errmsg})
-	  fail.OnError(err, "Failed to marshal status")
-	  publishStatus(body)
+	if !RabbitMQEnabled() {
+		return
+	}
+
+	body, err := json.Marshal(Status{Status: STATUS_ERROR, Error: &errmsg})
+	fail.OnError(err, "Failed to marshal status")
+	publishStatus(body)
 }
 
 func publishStatus(body []byte) {
-	  err := ch.Publish(
-		"",     // exchange
+	if !RabbitMQEnabled() {
+		return
+	}
+
+	err := ch.Publish(
+		"",           // exchange
 		statusq.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
-		amqp.Publishing {
-		  ContentType: "text/json",
-		  Body:        body,
+		false,        // mandatory
+		false,        // immediate
+		amqp.Publishing{
+			ContentType: "text/json",
+			Body:        body,
 		})
-	  fail.OnError(err, "Failed to publish a message")
+	fail.OnError(err, "Failed to publish a message")
 }
