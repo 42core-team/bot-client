@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/42core-team/bot-client/exec"
 	"github.com/42core-team/bot-client/git"
@@ -11,13 +12,16 @@ import (
 
 func main() {
 	godotenv.Load()
-	rabbitmq.Init()
+	if os.Getenv("ENABLE_RABBITMQ") == "true" {
+		rabbitmq.Init()
+		defer rabbitmq.Close()
+	}
+
 	pullBuild()
-	rabbitmq.Close()
 }
 
 func pullBuild() {
-	_, err := git.Clone("https://github.com/42core-team/my-core-bot")
+	_, err := git.Clone(os.Getenv("REPO_URL"))
 	if err != nil {
 		fmt.Println(err)
 	}
