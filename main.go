@@ -16,6 +16,7 @@ func main() {
 	defer rabbitmq.Close()
 
 	pullBuild()
+	log.Println("Bot run successfully")
 }
 
 func pullBuild() {
@@ -24,6 +25,13 @@ func pullBuild() {
 		log.Fatalln(err)
 	}
 
-	exec.BuildBot()
-	exec.RunBot()
+	err = exec.BuildBot()
+	if err != nil {
+		log.Fatalln("Build failed!\n" + err.Error())
+	}
+
+	err = exec.RunBot()
+	if err != nil {
+		log.Fatalln("Run failed!\n" + err.Error())
+	}
 }

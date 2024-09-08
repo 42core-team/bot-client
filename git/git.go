@@ -12,7 +12,7 @@ import (
 func Clone(url string) (*git.Repository, error) {
 	log.Println("Cloning repository...")
 	rabbitmq.SendStatus(rabbitmq.STATUS_PULLING)
-	dir := os.Getenv("REPO_BASE_URL") + "/repo"
+	dir := "./repo"
 	os.RemoveAll(dir)
 	return git.PlainClone(dir, false, &git.CloneOptions{
 		URL: url,
