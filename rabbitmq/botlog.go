@@ -10,16 +10,15 @@ import (
 )
 
 func StreamLogs(pipe io.ReadCloser) {
-	if !RabbitMQEnabled() {
-		return
-	}
-
 	scanner := bufio.NewScanner(pipe)
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		log.Print(line)
 
+		if !RabbitMQEnabled() {
+			continue
+		}
 		err := ch.Publish(
 			"",        // exchange
 			logq.Name, // routing key

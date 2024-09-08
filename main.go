@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/42core-team/bot-client/exec"
@@ -21,7 +21,7 @@ func main() {
 func pullBuild() {
 	_, err := git.Clone(os.Getenv("REPO_URL"))
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 	}
 
 	exec.BuildBot()
