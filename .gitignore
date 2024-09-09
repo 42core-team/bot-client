@@ -23,3 +23,5 @@ go.work
 go.work.sum
 
 /repo
+my-core-bot/*
+!my-core-bot/Makefile

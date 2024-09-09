@@ -12,7 +12,6 @@ import (
 func BuildBot() error {
 	log.Println("Building bot...")
 	cmd := exec.Command("make", "build")
-	cmd.Dir = os.Getenv("REPO_BASE_PATH")
 	stdout, err := cmd.StdoutPipe()
 	fail.OnError(err, "Failed to get stdout pipe")
 	stderr, err := cmd.StderrPipe()
@@ -28,7 +27,6 @@ func BuildBot() error {
 func RunBot() error {
 	log.Println("Running bot...")
 	cmd := exec.Command("./bot", os.Getenv("PLAYER_ID"))
-	cmd.Dir = os.Getenv("REPO_BASE_PATH")
 	stdout, err := cmd.StdoutPipe()
 	fail.OnError(err, "Failed to get stdout pipe")
 	stderr, err := cmd.StderrPipe()
@@ -36,7 +34,8 @@ func RunBot() error {
 	go rabbitmq.StreamLogs(stdout)
 	go rabbitmq.StreamLogs(stderr)
 	err = cmd.Start()
-	fail.OnError(err, "Failed to start build")
+	fail.OnError(err, "Failed to start bot")
 	rabbitmq.SendStatus(rabbitmq.STATUS_RUNNING)
+	log.Println("Bot is running")
 	return cmd.Wait()
 }
