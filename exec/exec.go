@@ -11,7 +11,7 @@ import (
 
 func BuildBot() error {
 	log.Println("Building bot...")
-	cmd := exec.Command("make", "build")
+	cmd := exec.Command("make", "-C", "repo", "bot")
 	stdout, err := cmd.StdoutPipe()
 	fail.OnError(err, "Failed to get stdout pipe")
 	stderr, err := cmd.StderrPipe()
@@ -26,7 +26,7 @@ func BuildBot() error {
 
 func RunBot() error {
 	log.Println("Running bot...")
-	cmd := exec.Command("./bot", os.Getenv("PLAYER_ID"))
+	cmd := exec.Command("./repo/bot", os.Getenv("PLAYER_ID"))
 	stdout, err := cmd.StdoutPipe()
 	fail.OnError(err, "Failed to get stdout pipe")
 	stderr, err := cmd.StderrPipe()
