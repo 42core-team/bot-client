@@ -15,10 +15,10 @@ func Clone(url string) (*git.Repository, error) {
 	dir := "./repo"
 	os.RemoveAll(dir)
 	return git.PlainClone(dir, false, &git.CloneOptions{
-		URL: url,
+		URL:          url,
 		SingleBranch: true,
-		Depth: 1,
-		Progress: os.Stdout,
+		Depth:        1,
+		Progress:     os.Stdout,
 		Auth: &http.BasicAuth{
 			Username: "nil",
 			Password: os.Getenv("GIT_ACCESS_TOKEN"),

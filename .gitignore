@@ -25,3 +25,5 @@ go.work.sum
 /repo
 my-core-bot/*
 !my-core-bot/Makefile
+
+.DS_Store
