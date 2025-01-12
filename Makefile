@@ -1,7 +1,7 @@
 IMAGE_NAME = registry.coregame.de/core/bot-client
 
 debug:
-	cd my-core-bot && go run ../main.go
+	go run main.go
 
 run: build
 	docker run -it --rm --env-file .env $(IMAGE_NAME):latest

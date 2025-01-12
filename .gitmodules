@@ -1,4 +1,0 @@
-[submodule "my-core-bot/connection"]
-	path = my-core-bot/connection
-	url = git@github.com:42core-team/connection.git
-	branch = main
