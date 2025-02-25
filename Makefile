@@ -10,4 +10,4 @@ push: build
 	docker push $(IMAGE_NAME):latest
 
 build:
-	docker build -t $(IMAGE_NAME):latest -f ./.github/workflows/Dockerfile .
+	docker build -t $(IMAGE_NAME):latest --platform linux/amd64,linux/arm64 -f ./.github/workflows/Dockerfile .
