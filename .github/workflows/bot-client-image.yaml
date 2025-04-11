@@ -53,7 +53,7 @@ jobs:
           platforms: linux/amd64, linux/arm64
           push: true
           build-args: |
-            TAG_NAME=${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
+            TAG_NAME=${{ github.ref_name }}
           tags: |
             ghcr.io/42core-team/bot-client:${{ github.ref_name }}
             ghcr.io/42core-team/bot-client:${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
